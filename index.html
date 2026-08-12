@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark Musics — Find Your Sound</title>
+<meta name="description" content="Spark Musics is a neighborhood music school offering private lessons in piano, guitar, voice, drums, violin, and theory — in-person and online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17102B;
+    --ink-2:#0D0919;
+    --paper:#F7EFDD;
+    --paper-2:#FBF6EA;
+    --gold:#F2A93B;
+    --coral:#FF6B57;
+    --ivory:#F5EFE6;
+    --ink-text:#251C3D;
+    --muted-dark:#B7ADCF;
+    --muted-light:#6B6180;
+
+    --font-display:'Fraunces','Iowan Old Style','Palatino Linotype',serif;
+    --font-body:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+
+    --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
+    --space-5:48px; --space-6:64px; --space-7:96px; --space-8:140px;
+
+    --radius-s:8px; --radius-m:14px;
+    --max-w:1180px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    background:var(--ink);
+    color:var(--ivory);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  .wrap{max-width:var(--max-w); margin:0 auto; padding:0 var(--space-4);}
+  section{position:relative;}
+
+  h1,h2,h3,.serif{font-family:var(--font-display);}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+  }
+
+  :focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:15px;
+    padding:15px 26px;
+    border-radius:999px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn:active{transform:translateY(0);}
+  .btn-primary{
+    background:linear-gradient(135deg, var(--gold), var(--coral));
+    color:var(--ink-2);
+    box-shadow:0 10px 24px -8px rgba(242,169,59,0.55);
+  }
+  .btn-primary:hover{box-shadow:0 14px 30px -8px rgba(255,107,87,0.6);}
+  .btn-primary svg{width:16px; height:16px;}
+  .btn-ghost{
+    background:transparent;
+    border-color:rgba(245,239,230,0.35);
+    color:var(--ivory);
+    padding:11px 22px;
+    font-size:14px;
+  }
+  .btn-ghost:hover{border-color:var(--gold); color:var(--gold);}
+  .btn-dark{
+    background:var(--ink-2);
+    color:var(--ivory);
+    box-shadow:0 10px 24px -10px rgba(13,9,25,0.5);
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(23,16,43,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(245,239,230,0.08);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:var(--space-2); padding-bottom:var(--space-2);
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:0.01em;
+  }
+  .logo svg{width:26px; height:26px; color:var(--gold);}
+  .nav-links{
+    display:flex; align-items:center; gap:var(--space-5);
+    font-size:14px; font-weight:600;
+  }
+  .nav-links a{opacity:0.85; transition:opacity 0.15s, color 0.15s;}
+  .nav-links a:hover{opacity:1; color:var(--gold);}
+  .nav-cta{display:flex; align-items:center; gap:var(--space-3);}
+  .nav-toggle{
+    display:none;
+    background:none; border:none; color:var(--ivory);
+    width:36px; height:36px; cursor:pointer;
+  }
+  .nav-toggle svg{width:24px; height:24px;}
+
+  @media (max-width: 860px){
+    .nav-links{
+      position:absolute; top:100%; left:0; right:0;
+      flex-direction:column; align-items:flex-start; gap:var(--space-3);
+      background:var(--ink-2);
+      padding:var(--space-4);
+      border-bottom:1px solid rgba(245,239,230,0.1);
+      display:none;
+    }
+    .nav-links.open{display:flex;}
+    .nav-toggle{display:inline-flex; align-items:center; justify-content:center;}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:var(--space-7) 0 var(--space-8);
+    overflow:hidden;
+    position:relative;
+  }
+  .eq-field{
+    position:absolute; inset:0;
+    display:flex; align-items:flex-end; justify-content:center;
+    gap:10px;
+    opacity:0.16;
+    pointer-events:none;
+    mask-image:linear-gradient(to bottom, transparent, black 55%, transparent);
+    -webkit-mask-image:linear-gradient(to bottom, transparent, black 55%, transparent);
+  }
+  .eq-field span{
+    width:14px;
+    border-radius:6px;
+    background:linear-gradient(180deg, var(--gold), var(--coral));
+    animation:eq 1.8s ease-in-out infinite;
+    transform-origin:bottom;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .eq-field span:nth-child(1){height:60px; animation-delay:-1.6s;}
+    .eq-field span:nth-child(2){height:120px; animation-delay:-1.1s;}
+    .eq-field span:nth-child(3){height:190px; animation-delay:-0.4s;}
+    .eq-field span:nth-child(4){height:90px; animation-delay:-1.9s;}
+    .eq-field span:nth-child(5){height:220px; animation-delay:-0.7s;}
+    .eq-field span:nth-child(6){height:130px; animation-delay:-1.3s;}
+    .eq-field span:nth-child(7){height:200px; animation-delay:-0.2s;}
+    .eq-field span:nth-child(8){height:80px; animation-delay:-1.5s;}
+    .eq-field span:nth-child(9){height:170px; animation-delay:-0.9s;}
+    .eq-field span:nth-child(10){height:110px; animation-delay:-0.5s;}
+    .eq-field span:nth-child(11){height:150px; animation-delay:-1.7s;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .eq-field span{animation:none;}
+    .eq-field span:nth-child(1){height:60px;} .eq-field span:nth-child(2){height:120px;}
+    .eq-field span:nth-child(3){height:190px;} .eq-field span:nth-child(4){height:90px;}
+    .eq-field span:nth-child(5){height:220px;} .eq-field span:nth-child(6){height:130px;}
+    .eq-field span:nth-child(7){height:200px;} .eq-field span:nth-child(8){height:80px;}
+    .eq-field span:nth-child(9){height:170px;} .eq-field span:nth-child(10){height:110px;}
+    .eq-field span:nth-child(11){height:150px;}
+  }
+  @keyframes eq{
+    0%,100%{transform:scaleY(0.45);}
+    50%{transform:scaleY(1);}
+  }
+
+  .hero-inner{position:relative; z-index:1; max-width:760px;}
+  .hero .eyebrow{color:var(--gold); margin-bottom:var(--space-3);}
+  .hero h1{
+    font-size:clamp(42px, 6.4vw, 76px);
+    font-weight:700;
+    line-height:1.03;
+    letter-spacing:-0.01em;
+    margin-bottom:var(--space-3);
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    background:linear-gradient(135deg, var(--gold), var(--coral));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p.lede{
+    font-size:18px;
+    color:var(--muted-dark);
+    max-width:520px;
+    margin-bottom:var(--space-5);
+  }
+  .hero-actions{display:flex; align-items:center; gap:var(--space-3); flex-wrap:wrap;}
+  .hero-note{font-family:var(--font-mono); font-size:12.5px; color:var(--muted-dark);}
+
+  /* ---------- Staff divider (signature element) ---------- */
+  .staff-divider{width:100%; display:block; color:var(--gold);}
+  .staff-divider.flip{transform:scaleY(-1);}
+
+  /* ---------- Section shells ---------- */
+  .section{padding:var(--space-8) 0;}
+  .section-light{background:var(--paper); color:var(--ink-text);}
+  .section-light .eyebrow{color:var(--coral);}
+  .section-dark .eyebrow{color:var(--gold);}
+  .section-head{max-width:640px; margin-bottom:var(--space-6);}
+  .section-head .eyebrow{margin-bottom:var(--space-2); display:block;}
+  .section-head h2{font-size:clamp(28px, 3.6vw, 42px); font-weight:600; line-height:1.15;}
+
+  /* ---------- Programs ---------- */
+  .program-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    gap:var(--space-3);
+  }
+  .program-card{
+    background:var(--paper-2);
+    border:1px solid rgba(37,28,61,0.08);
+    border-radius:var(--radius-m);
+    padding:var(--space-4);
+    transition:transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .program-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 18px 30px -18px rgba(37,28,61,0.35);
+    border-color:rgba(255,107,87,0.4);
+  }
+  .program-icon{
+    width:46px; height:46px;
+    border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, rgba(242,169,59,0.18), rgba(255,107,87,0.18));
+    color:var(--coral);
+    margin-bottom:var(--space-3);
+  }
+  .program-icon svg{width:24px; height:24px;}
+  .program-card h3{font-family:var(--font-body); font-size:17px; font-weight:800; margin-bottom:6px;}
+  .program-card p{font-size:14.5px; color:var(--muted-light);}
+
+  /* ---------- Approach ---------- */
+  .approach-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:var(--space-5);
+  }
+  .approach-item{border-top:1px solid rgba(245,239,230,0.15); padding-top:var(--space-3);}
+  .approach-item .glyph{color:var(--gold); margin-bottom:var(--space-2);}
+  .approach-item .glyph svg{width:22px; height:22px;}
+  .approach-item h3{font-family:var(--font-body); font-size:17px; font-weight:800; margin-bottom:8px;}
+  .approach-item p{font-size:14.5px; color:var(--muted-dark); max-width:34ch;}
+
+  /* ---------- Testimonial ---------- */
+  .testimonial{max-width:760px; margin:0 auto; text-align:center;}
+  .testimonial svg.quote-mark{width:34px; height:34px; color:var(--coral); margin:0 auto var(--space-3);}
+  .testimonial blockquote{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(22px, 3vw, 32px);
+    line-height:1.35;
+    margin-bottom:var(--space-3);
+  }
+  .testimonial cite{font-family:var(--font-mono); font-style:normal; font-size:13px; color:var(--muted-light); letter-spacing:0.05em;}
+
+  /* ---------- Final CTA ---------- */
+  .cta-band{
+    background:linear-gradient(120deg, var(--gold), var(--coral));
+    border-radius:var(--radius-m);
+    padding:var(--space-6) var(--space-5);
+    text-align:center;
+    color:var(--ink-2);
+  }
+  .cta-band h2{font-size:clamp(28px, 4vw, 44px); font-weight:700; margin-bottom:var(--space-2);}
+  .cta-band p{font-size:16px; color:rgba(13,9,25,0.75); margin-bottom:var(--space-4);}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--ink-2); padding:var(--space-6) 0 var(--space-4);}
+  .footer-top{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    flex-wrap:wrap; gap:var(--space-4);
+    padding-bottom:var(--space-5);
+    border-bottom:1px solid rgba(245,239,230,0.1);
+  }
+  .footer-brand p{color:var(--muted-dark); font-size:14px; max-width:34ch; margin-top:var(--space-2);}
+  .footer-links{display:flex; gap:var(--space-6); flex-wrap:wrap;}
+  .footer-links h4{font-family:var(--font-mono); font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted-dark); margin-bottom:var(--space-2);}
+  .footer-links a{display:block; font-size:14px; padding:4px 0; color:var(--ivory); opacity:0.85;}
+  .footer-links a:hover{opacity:1; color:var(--gold);}
+  .footer-bottom{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:var(--space-2);
+    padding-top:var(--space-4);
+    font-family:var(--font-mono); font-size:12px; color:var(--muted-dark);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a href="#top" class="logo">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M24 4 L28 20 L44 24 L28 28 L24 44 L20 28 L4 24 L20 20 Z"/>
+      </svg>
+      Spark Musics
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#programs">Programs</a></li>
+      <li><a href="#approach">Teachers</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="https://www.google.com" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Book a Free Lesson</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eq-field" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="wrap hero-inner">
+      <span class="eyebrow">Est. 2015 · In-person &amp; online</span>
+      <h1>Find your <em>sound.</em></h1>
+      <p class="lede">Private lessons in piano, guitar, voice, drums, violin, and theory — taught by working musicians, for every age and every level.</p>
+      <div class="hero-actions">
+        <a href="https://www.google.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          Book a Free Trial Lesson
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <span class="hero-note">30 minutes · no instrument required</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNATURE STAFF DIVIDER -->
+  <svg class="staff-divider" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 40 C 150 0, 300 0, 450 30 C 600 60, 750 60, 900 30 C 1000 10, 1100 10, 1200 30" fill="none" stroke="url(#staffGrad)" stroke-width="2"/>
+    <circle cx="450" cy="30" r="5" fill="var(--gold)"/>
+    <circle cx="900" cy="30" r="5" fill="var(--coral)"/>
+    <defs>
+      <linearGradient id="staffGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#F2A93B"/>
+        <stop offset="1" stop-color="#FF6B57"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- PROGRAMS -->
+  <section class="section section-light" id="programs">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">What we teach</span>
+        <h2>Six instruments, one home for your practice.</h2>
+      </div>
+      <div class="program-grid">
+
+        <div class="program-card">
+          <div class="program-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="6" y="12" width="36" height="24" rx="2"/>
+              <path d="M13 12v24M20 12v24M27 12v24M34 12v24"/>
+              <rect x="9" y="12" width="5" height="14" fill="currentColor" stroke="none"/>
+              <rect x="20.5" y="12" width="5" height="14" fill="currentColor" stroke="none"/>
+              <rect x="32" y="12" width="5" height="14" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <h3>Piano</h3>
+          <p>From first scales to concert repertoire.</p>
+        </div>
+
+        <div class="program-card">
+          <div class="program-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="18" cy="32" r="9"/>
+              <path d="M23 26 L34 8"/>
+              <path d="M31 6 L38 12"/>
+              <path d="M15 29 L20 34M18 27 L23 32"/>
+            </svg>
+          </div>
+          <h3>Guitar</h3>
+          <p>Acoustic, electric, and everything between.</p>
+        </div>
+
+        <div class="program-card">
+          <div class="program-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="18" y="6" width="12" height="20" rx="6"/>
+              <path d="M12 22a12 12 0 0 0 24 0"/>
+              <path d="M24 34v8M17 42h14"/>
+            </svg>
+          </div>
+          <h3>Voice</h3>
+          <p>Technique, range, and stage confidence.</p>
+        </div>
+
+        <div class="program-card">
+          <div class="program-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <ellipse cx="24" cy="14" rx="16" ry="6"/>
+              <path d="M8 14v14a16 6 0 0 0 32 0V14"/>
+              <path d="M11 8 L4 4M37 8 L44 4"/>
+            </svg>
+          </div>
+          <h3>Drums</h3>
+          <p>Groove, timing, and reading charts.</p>
+        </div>
+
+        <div class="program-card">
+          <div class="program-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 6c6 2 8 8 6 14-2 5-1 9 2 12-4 3-9 2-11-2-3-5-8-4-11-1 0-6 3-9 6-11-4-3-4-9 0-12 2-2 5-1 8 0Z"/>
+              <path d="M30 34 L40 42"/>
+            </svg>
+          </div>
+          <h3>Violin</h3>
+          <p>Classical foundations, contemporary style.</p>
+        </div>
+
+        <div class="program-card">
+          <div class="program-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 14h36M6 22h36M6 30h36"/>
+              <circle cx="16" cy="30" r="3" fill="currentColor" stroke="none"/>
+              <circle cx="30" cy="22" r="3" fill="currentColor" stroke="none"/>
+              <path d="M19 30V16l14-4v10"/>
+            </svg>
+          </div>
+          <h3>Music Theory</h3>
+          <p>The grammar behind the sound.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section class="section section-dark" id="approach">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How we teach</span>
+        <h2>Built around the way you actually learn.</h2>
+      </div>
+      <div class="approach-grid">
+        <div class="approach-item">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 L14 8 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 8 Z"/></svg>
+          </div>
+          <h3>Working musicians, not just teachers</h3>
+          <p>Every instructor performs, records, or tours — they teach what they live every week.</p>
+        </div>
+        <div class="approach-item">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <h3>Any age, any starting point</h3>
+          <p>From first-time six-year-olds to adults picking an instrument back up after years away.</p>
+        </div>
+        <div class="approach-item">
+          <div class="glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+          </div>
+          <h3>Lessons that fit your week</h3>
+          <p>Studio sessions or online, weekly or flexible — the schedule bends to you, not the other way around.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAFF DIVIDER (flipped) -->
+  <svg class="staff-divider flip" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 40 C 150 0, 300 0, 450 30 C 600 60, 750 60, 900 30 C 1000 10, 1100 10, 1200 30" fill="none" stroke="url(#staffGrad2)" stroke-width="2"/>
+    <circle cx="450" cy="30" r="5" fill="var(--coral)"/>
+    <circle cx="900" cy="30" r="5" fill="var(--gold)"/>
+    <defs>
+      <linearGradient id="staffGrad2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#FF6B57"/>
+        <stop offset="1" stop-color="#F2A93B"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- TESTIMONIAL -->
+  <section class="section section-light" id="reviews">
+    <div class="wrap testimonial">
+      <svg class="quote-mark" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M10 6C5 8 2 13 2 18c0 4 3 7 7 7s7-3 7-7c0-3-2-5-5-5-.5 0-1 0-1.4.1C10.3 10 12.6 7.3 16 6l-6-0z"/><path d="M25 6c-5 2-8 7-8 12 0 4 3 7 7 7s7-3 7-7c0-3-2-5-5-5-.5 0-1 0-1.4.1C25.3 10 27.6 7.3 31 6l-6-0z"/></svg>
+      <blockquote>My daughter went from refusing to practice to asking for extra sessions. Spark found the exact right teacher for her.</blockquote>
+      <cite>Dana R. — piano parent, three years at Spark</cite>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="section section-dark">
+    <div class="wrap">
+      <div class="cta-band">
+        <h2>Your first lesson is on us.</h2>
+        <p>Thirty minutes with a real teacher, on your instrument, no strings attached.</p>
+        <a href="ttps://script.google.com/a/macros/seven-retail.com/s/AKfycbxNwVB0zUCPC5ga6_wU6iDQTb5wrRPYmqoungwPEExL66d0dL4reVlbfPdq2pADFDAXxA/exec" target="_blank" rel="noopener noreferrer" class="btn btn-dark">Book a Free Trial Lesson</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#top" class="logo">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M24 4 L28 20 L44 24 L28 28 L24 44 L20 28 L4 24 L20 20 Z"/>
+          </svg>
+          Spark Musics
+        </a>
+        <p>A neighborhood music school for every kind of musician.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4>Learn</h4>
+          <a href="#programs">Programs</a>
+          <a href="#approach">Teachers</a>
+          <a href="#reviews">Reviews</a>
+        </div>
+        <div>
+          <h4>Visit</h4>
+          <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Book a Lesson</a>
+          <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Find Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Spark Musics. All rights reserved.</span>
+      <span>Made with practice, patience, and a little noise.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var toggle = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+    toggle.addEventListener('click', function(){
+      var isOpen = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    links.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click', function(){
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
